@@ -1,15 +1,16 @@
 <div align="center">
 
-# 🛍️ Store
+# 🛍️ Store API
 
-**A simple, clean PHP product management system with full CRUD and image uploads.**
+**A RESTful e-commerce backend built with Node.js, Express, and MongoDB.**
 
-[![PHP](https://img.shields.io/badge/PHP-8.0+-777BB4?logo=php&logoColor=white)](https://www.php.net)
-[![MySQL](https://img.shields.io/badge/MySQL-5.7+-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com)
-[![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?logo=bootstrap&logoColor=white)](https://getbootstrap.com)
+[![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=node.js&logoColor=white)](https://nodejs.org)
+[![Express](https://img.shields.io/badge/Express-4.x-000000?logo=express&logoColor=white)](https://expressjs.com)
+[![MongoDB](https://img.shields.io/badge/MongoDB-7.x-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com)
+[![Mongoose](https://img.shields.io/badge/Mongoose-8.x-880000?logo=mongoose&logoColor=white)](https://mongoosejs.com)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](#-license)
 
-[Overview](#-overview) · [Features](#-features) · [Tech Stack](#-tech-stack) · [Structure](#-project-structure) · [Getting Started](#-getting-started) · [Security](#-security) · [Roadmap](#-roadmap)
+[Overview](#-overview) · [Features](#-features) · [Tech Stack](#-tech-stack) · [Structure](#-project-structure) · [Getting Started](#-getting-started) · [Data Models](#-data-models) · [API](#-api-reference)
 
 </div>
 
@@ -17,23 +18,30 @@
 
 ## 📌 Overview
 
-**Store** is a lightweight product management system built with **vanilla PHP** and **MySQL**. It provides a clean, responsive interface for managing a product catalog — with full **CRUD** operations, **image uploads**, and a **Bootstrap 5** UI.
+**Store API** is a lightweight e-commerce backend that manages **users**, **products**, and **orders**. It exposes a clean REST API with MongoDB-backed persistence through Mongoose.
 
-The project is intentionally minimal: no frameworks, no ORMs, no build steps. It's perfect as a **learning project**, a **starter template**, or a foundation to extend into a bigger application.
+The project is intentionally minimal and framework-free — just Node.js, Express, and Mongoose — making it an excellent **starter template** for any product catalog, marketplace, or shop backend.
 
 ---
 
 ## ✨ Features
 
-- ➕ **Create** products with name, description, price, quantity, and image
-- 📋 **Read** — responsive card grid with product listings
-- ✏️ **Update** products with optional image replacement
-- 🗑️ **Delete** products with confirmation and automatic image cleanup
-- 🖼️ **Image uploads** with extension whitelist and size limit
-- 🔒 **PDO prepared statements** — SQL-injection safe by design
-- 🛡️ **XSS-escaped output** via `htmlspecialchars()`
-- 📱 **Responsive UI** built on Bootstrap 5
-- ⚡ **Zero dependencies** — no Composer, no npm, just PHP
+### 👤 User Management
+- Store user identity: first name, last name, full name, email, password
+- Auto-generate `fullName` from first + last name (Mongoose pre-save hook)
+- Email validation (`@` check) + unique index
+- Role-based field: `admin` or `customer`
+- Profile details: age, gender, address (street, city)
+
+### 📦 Product Management
+- Product name, price, expiry date
+- Category enum: `food`, `electronics`, `clothing`
+- Auto-managed `criatdate` (created date)
+
+### 🧾 Order Management
+- Link a user to a product
+- Record total price and order date
+- Mongoose `populate()` support for full user/product details
 
 ---
 
@@ -41,11 +49,12 @@ The project is intentionally minimal: no frameworks, no ORMs, no build steps. It
 
 | Layer | Technology |
 |-------|-----------|
-| **Language** | PHP 8.0+ (with `strict_types`) |
-| **Database** | MySQL 5.7+ / MariaDB 10.3+ |
-| **DB Access** | PDO with prepared statements |
-| **Frontend** | HTML5, Bootstrap 5.3 (CDN) |
-| **Server** | Apache, Nginx, or PHP's built-in server |
+| **Runtime** | Node.js 20+ |
+| **Framework** | Express 4 |
+| **Database** | MongoDB 7 |
+| **ODM** | Mongoose 8 |
+| **Config** | dotenv |
+| **Dev tools** | nodemon |
 
 ---
 
