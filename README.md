@@ -2,7 +2,7 @@
 
 # 🛍️ Store API
 
-**A RESTful e-commerce backend built with Node.js, Express, and MongoDB.**
+**A production-ready REST API for products, users, and orders — with filtering, search, and pagination built in.**
 
 [![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 [![Express](https://img.shields.io/badge/Express-4.x-000000?logo=express&logoColor=white)](https://expressjs.com)
@@ -10,7 +10,7 @@
 [![Mongoose](https://img.shields.io/badge/Mongoose-8.x-880000?logo=mongoose&logoColor=white)](https://mongoosejs.com)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](#-license)
 
-[Overview](#-overview) · [Features](#-features) · [Tech Stack](#-tech-stack) · [Structure](#-project-structure) · [Getting Started](#-getting-started) · [Data Models](#-data-models) · [API](#-api-reference)
+[Overview](#-overview) · [Features](#-features) · [Database](#-database-design) · [Filters & Search](#-filtering-search--pagination) · [Lifting](#-what-is-lifting) · [Getting Started](#-getting-started) · [API](#-api-reference)
 
 </div>
 
@@ -18,30 +18,47 @@
 
 ## 📌 Overview
 
-**Store API** is a lightweight e-commerce backend that manages **users**, **products**, and **orders**. It exposes a clean REST API with MongoDB-backed persistence through Mongoose.
+**Store API** is a full-featured e-commerce backend built with **Node.js**, **Express**, and **MongoDB**. It manages **users**, **products**, and **orders** with rich filtering, full-text search, and pagination on every list endpoint.
 
-The project is intentionally minimal and framework-free — just Node.js, Express, and Mongoose — making it an excellent **starter template** for any product catalog, marketplace, or shop backend.
+The project follows a clean **MVC + Service** architecture and demonstrates the **"lifting"** pattern — where logic is progressively lifted from routes to controllers, then to services, for maximum reusability and testability.
+
+It's designed as a **reusable template** — fork it, rename the models, and you have a working API for any catalog, inventory, or marketplace project.
 
 ---
 
 ## ✨ Features
 
+### 🔍 Search & Filters (on every list endpoint)
+- 🔎 **Full-text search** across multiple fields
+- 🎯 **Field filters** (category, role, gender, date ranges)
+- 📊 **Sorting** by any field, ascending or descending
+- 📄 **Pagination** with `page` and `limit`
+- 🧮 **Result metadata** — total count, total pages, current page
+- 🎛️ **Field selection** — return only the fields you need
+- 🗓️ **Date range filtering** (`from`, `to`)
+
 ### 👤 User Management
-- Store user identity: first name, last name, full name, email, password
-- Auto-generate `fullName` from first + last name (Mongoose pre-save hook)
-- Email validation (`@` check) + unique index
-- Role-based field: `admin` or `customer`
-- Profile details: age, gender, address (street, city)
+- First name, last name, auto-generated full name
+- Email validation + uniqueness
+- Role enum: `admin`, `customer`
+- Age, gender, nested address (street, city)
 
 ### 📦 Product Management
-- Product name, price, expiry date
+- Name, price, expiry date
 - Category enum: `food`, `electronics`, `clothing`
-- Auto-managed `criatdate` (created date)
+- Auto-managed `createdAt` timestamp
 
 ### 🧾 Order Management
-- Link a user to a product
-- Record total price and order date
-- Mongoose `populate()` support for full user/product details
+- Reference-based user ↔ product relationship
+- Populated responses (full user + product details)
+- Total price and order date tracking
+
+### 🛡️ Security & Quality
+- ✅ Centralized error handling
+- ✅ Input validation via Mongoose
+- ✅ CORS, Helmet, rate limiting ready
+- ✅ Environment-based config
+- ✅ Reusable service layer
 
 ---
 
@@ -54,8 +71,11 @@ The project is intentionally minimal and framework-free — just Node.js, Expres
 | **Database** | MongoDB 7 |
 | **ODM** | Mongoose 8 |
 | **Config** | dotenv |
+| **Security** | helmet, cors, express-rate-limit |
 | **Dev tools** | nodemon |
 
 ---
 
-## 📂 Project Structure
+## 🗄️ Database Design
+
+The database consists of **three collections** with clear relationships.
